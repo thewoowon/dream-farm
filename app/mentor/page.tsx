@@ -514,7 +514,7 @@ const Main = styled.main`
 `;
 
 const GridBox = styled.div`
-  width: 100%;
+  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
@@ -522,11 +522,11 @@ const GridBox = styled.div`
 `;
 
 const GridItem = styled.div`
-  width: 100%;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 8px;
   padding: 10px;
   border-radius: 10px;
