@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Range } from "react-range";
+import { formatToKoreanMoney, mapSliderToAmount } from "@/utils";
 
 type EnterBudgetProps = {
   state: FlowState;
@@ -16,69 +17,91 @@ const STEP = 1;
 const MIN = 0;
 const MAX = 100;
 
+const SliderWrapper = styled.div`
+  flex: 1;
+  width: 100%;
+`;
+
 const Track = styled.div`
   height: 6px;
-  width: 100%;
   background: #ddd;
   border-radius: 3px;
 `;
 
-const TrackHighlight = styled.div`
-  height: 6px;
-  background: #4caf50;
-  border-radius: 3px;
-`;
-
 const Thumb = styled.div`
-  width: 32px;
   height: 32px;
-  background: #ffffff;
+  width: 32px;
+  background-color: #ffffff;
   border-radius: 50%;
-  border: 1px solid #d0d0d0;
-  box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-  cursor: grab;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #d9d9d9;
 `;
 
-function DoubleRangeSlider() {
-  const [values, setValues] = useState([2000, 8000]);
+const RangeLabel = styled.div`
+  width: 100%;
+  margin-top: 24px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
+const TwoThumbSlider = ({
+  values,
+  setValues,
+}: {
+  values: number[];
+  setValues: (values: number[]) => void;
+}) => {
   return (
-    <div style={{ width: "100%" }}>
+    <SliderWrapper>
       <Range
         step={STEP}
         min={MIN}
         max={MAX}
         values={values}
-        onChange={(newValues) => setValues(newValues)}
+        onChange={setValues}
         renderTrack={({ props, children }) => (
           <div
             {...props}
-            style={{ height: "36px", display: "flex", width: "100%" }}
-          >
-            <Track ref={props.ref}>
-              <TrackHighlight
-                style={{
-                  marginLeft: `${(values[0] / MAX) * 100}%`,
-                  width: `${((values[1] - values[0]) / MAX) * 100}%`,
-                }}
-              />
-              {children}
-            </Track>
-          </div>
-        )}
-        renderThumb={({ props, index }) => (
-          <Thumb
-            {...props}
-            key={index}
             style={{
               ...props.style,
+              height: "6px",
+              width: "100%",
+              background: `linear-gradient(to right, #ddd ${values[0]}%, #008F66 ${values[0]}%, #008F66 ${values[1]}%, #ddd ${values[1]}%)`,
+              borderRadius: "3px",
             }}
-          />
+          >
+            {children}
+          </div>
         )}
+        renderThumb={({ props, index }) => <Thumb {...props} key={index} />}
       />
-    </div>
+      <RangeLabel>
+        <div
+          style={{
+            color: "#B0B0B0",
+            fontWeight: 500,
+            fontSize: "14px",
+            lineHeight: "20px",
+          }}
+        >
+          {formatToKoreanMoney(mapSliderToAmount(values[0]))}
+        </div>
+        <div
+          style={{
+            color: "#B0B0B0",
+            fontWeight: 500,
+            fontSize: "14px",
+            lineHeight: "20px",
+          }}
+        >
+          {formatToKoreanMoney(mapSliderToAmount(values[1]))}
+        </div>
+      </RangeLabel>
+    </SliderWrapper>
   );
-}
+};
 
 const EnterBudget = ({
   state,
@@ -86,10 +109,7 @@ const EnterBudget = ({
   context,
   setContext,
 }: EnterBudgetProps) => {
-  const [minValue, setMinValue] = useState(2000);
-  const [maxValue, setMaxValue] = useState(8000);
-  const min = 20;
-  const max = 80;
+  const [values, setValues] = useState([MIN, MAX]);
   const [tipToggle, setTipToggle] = useState(false);
   return (
     <Wrapper>
@@ -106,70 +126,82 @@ const EnterBudget = ({
           style={{
             width: "100%",
             display: "flex",
-            flexDirection: "row",
-            gap: "12px",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
+            gap: "36px",
           }}
         >
-          <div style={{ flex: 1, height: "58px" }}>
-            <input
-              value={minValue + "만원"}
-              onChange={(e) =>
-                setMinValue(Number(e.target.value.replace("만원", "")))
-              }
-              style={{
-                width: "100%",
-                height: "100%",
-                outline: "none",
-                backgroundColor: "white",
-                border: "0.5px solid #d0d0d0",
-                borderRadius: "12px",
-                fontSize: "16px",
-                fontWeight: 400,
-                lineHeight: "24px",
-                letterSpacing: "-2%",
-                textAlign: "center",
-              }}
-            />
-          </div>
           <div
             style={{
-              fontWeight: 400,
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: "12px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            ~
-          </div>
-          <div style={{ flex: 1, height: "58px" }}>
-            <input
-              value={maxValue + "만원"}
-              onChange={(e) =>
-                setMaxValue(Number(e.target.value.replace("만원", "")))
-              }
+            <div style={{ flex: 1, height: "58px" }}>
+              <input
+                readOnly
+                value={formatToKoreanMoney(mapSliderToAmount(values[0]))}
+                onChange={(e) =>
+                  setValues([
+                    Number(e.target.value.replace("만원", "")),
+                    values[1],
+                  ])
+                }
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  outline: "none",
+                  backgroundColor: "white",
+                  border: "0.5px solid #d0d0d0",
+                  borderRadius: "12px",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "24px",
+                  letterSpacing: "-2%",
+                  textAlign: "center",
+                }}
+              />
+            </div>
+            <div
               style={{
-                width: "100%",
-                height: "100%",
-                outline: "none",
-                backgroundColor: "white",
-                border: "0.5px solid #d0d0d0",
-                borderRadius: "12px",
-                fontSize: "16px",
                 fontWeight: 400,
-                lineHeight: "24px",
-                letterSpacing: "-2%",
-                textAlign: "center",
               }}
-            />
+            >
+              ~
+            </div>
+            <div style={{ flex: 1, height: "58px" }}>
+              <input
+                readOnly
+                value={formatToKoreanMoney(mapSliderToAmount(values[1]))}
+                onChange={(e) =>
+                  setValues([
+                    values[0],
+                    Number(e.target.value.replace("만원", "")),
+                  ])
+                }
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  outline: "none",
+                  backgroundColor: "white",
+                  border: "0.5px solid #d0d0d0",
+                  borderRadius: "12px",
+                  fontSize: "16px",
+                  fontWeight: 400,
+                  lineHeight: "24px",
+                  letterSpacing: "-2%",
+                  textAlign: "center",
+                }}
+              />
+            </div>
           </div>
+          <TwoThumbSlider values={values} setValues={setValues} />
         </div>
-        {/* <RangeSlider
-          type="range"
-          min={0}
-          max={100}
-          value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
-        /> */}
-        {/* <DoubleRangeSlider /> */}
       </TitleBox>
       <ButtonWrapper>
         <div
@@ -228,7 +260,13 @@ const EnterBudget = ({
             됩니다.
           </div>
         )}
-        <Button onClick={next} disabled={context.budget ? false : true}>
+        <Button
+          onClick={() => {
+            setContext(`${values[0]} ~ ${values[1]}`);
+            next();
+          }}
+          disabled={values ? false : true}
+        >
           다음
         </Button>
         <HollowButton
@@ -338,86 +376,4 @@ const ButtonWrapper = styled.div`
   position: relative;
   bottom: 20px;
   gap: 12px;
-`;
-
-const ScoreBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-`;
-
-const ScoreItem = styled.div<{
-  selected: boolean;
-}>`
-  width: 100%;
-  height: 44px;
-  background-color: white;
-  color: ${({ selected }) => (selected ? COLORS.primary[600] : "#343a40")};
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: -2%;
-  transition: all 0.2s ease-in-out;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const RangeSlider = styled.input`
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  background: #ddd;
-  border-radius: 3px;
-  outline: none;
-  cursor: pointer;
-
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 32px;
-    height: 32px;
-    background: #ffffff;
-    border-radius: 50%;
-    border: 1px solid #d0d0d0;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
-    transition: background 0.3s ease;
-    cursor: pointer;
-  }
-
-  &::-webkit-slider-thumb:hover {
-    background: #45a049;
-  }
-
-  &::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #4caf50;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  &::-moz-range-track {
-    background: #ddd;
-    height: 6px;
-    border-radius: 3px;
-  }
-
-  &::-ms-thumb {
-    width: 20px;
-    height: 20px;
-    background: #4caf50;
-    border-radius: 50%;
-    cursor: pointer;
-  }
-
-  &::-ms-track {
-    background: transparent;
-    border-color: transparent;
-    color: transparent;
-    height: 6px;
-  }
 `;

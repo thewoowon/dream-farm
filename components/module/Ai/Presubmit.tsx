@@ -1,4 +1,5 @@
 import { COLORS } from "@/styles/color";
+import { formatToKoreanMoney, mapSliderToAmount } from "@/utils";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
 
@@ -145,7 +146,13 @@ const Presubmit = ({
                   letterSpacing: "-2%",
                 }}
               >
-                {context.budget || "선택 안함"}
+                {context.budget
+                  ? context.budget
+                      .split("~")
+                      .map((bud) =>
+                        formatToKoreanMoney(mapSliderToAmount(Number(bud)))
+                      ).join(" ~ ")
+                  : "선택 안함"}
               </div>
             </div>
             <div

@@ -8,10 +8,10 @@ import { useRouter } from "next/navigation";
 import useHeaderStore from "@/store/useHeaderStore";
 import styled from "@emotion/styled";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
-// 로띠 타입 불러오기
 import { DotLottieReactProps } from "@lottiefiles/dotlottie-react";
 import { COLORS } from "@/styles/color";
 import { keyframes } from "@emotion/react";
+import Typewriter from "@/components/effect/Typewriter";
 
 type SpeechRecognitionStatus =
   | "onstart"
@@ -20,11 +20,25 @@ type SpeechRecognitionStatus =
   | "error"
   | "onend";
 
+const LoadingText = ({ text }: { text: string }) => {
+  const [dotCount, setDotCount] = useState(1);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDotCount((prev) => (prev % 3) + 1);
+    }, 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return <p>{text + ".".repeat(dotCount)}</p>;
+};
+
 const VoicePage = () => {
-  const [text, setText] = useState("🔘 버튼을 눌러 말해보세요!");
+  const [text, setText] = useState("시작하기 버튼을 눌러 말해보세요!");
 
   const [status, setStatus] = useState<SpeechRecognitionStatus>("onend");
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const audioObjectRef = useRef<HTMLAudioElement | null>(null);
   const [shouldPulse, setShouldPulse] = useState(false);
   const [scale, setScale] = useState<number[]>([1, 1.1, 1]);
   const [communicationContext, setCommunicationContext] = useState<
@@ -84,6 +98,7 @@ const VoicePage = () => {
 
       const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
+      audioObjectRef.current = audio; // 오디오 객체 저장
       audio.addEventListener("canplaythrough", () => {
         audio.play();
       });
@@ -166,7 +181,7 @@ const VoicePage = () => {
         ...prev,
         { content: transcript, role: "user" },
       ]);
-      setText("응답을 기다리고 있습니다.");
+      setText("응답을 기다리고 있습니다");
       setLoading(true); // 로딩 상태로 변경
       sendMessage(transcript); // 메시지 전송
       recognition.stop(); // 인식 종료
@@ -257,13 +272,31 @@ const VoicePage = () => {
         }}
       >
         {status == "onstart" || status == "onspeechstart" ? (
-          <div>듣고 있어요..</div>
+          <LoadingText text="듣고 있어요" />
+        ) : text && gptSpeech ? (
+          <Typewriter
+            textArray={[text]}
+            typingSpeed={50}
+            delayBetweenLines={1000}
+          />
+        ) : text && loading ? (
+          <span
+            style={{
+              fontSize: "20px",
+              fontWeight: 600,
+              lineHeight: "30px",
+              letterSpacing: "-2%",
+              color: "#000000",
+            }}
+          >
+            <LoadingText text={text} />
+          </span>
         ) : text ? (
           <span
             style={{
-              fontSize: "16px",
+              fontSize: "20px",
               fontWeight: 600,
-              lineHeight: "24px",
+              lineHeight: "30px",
               letterSpacing: "-2%",
               color: "#000000",
             }}
@@ -333,6 +366,20 @@ const VoicePage = () => {
         )}
       </ButtonWrapper>
       {gptSpeech && <InnerShadowWrapper />}
+      {gptSpeech && (
+        <ButtonWrapper>
+          <Button
+            onClick={() => {
+              setGptSpeech(false);
+              setLoading(false);
+              audioObjectRef.current?.pause(); // 오디오 일시 정지
+              audioObjectRef.current = null; // 오디오 객체 초기화
+            }}
+          >
+            멈추기
+          </Button>
+        </ButtonWrapper>
+      )}
     </Main>
   );
 };

@@ -21,6 +21,7 @@ import useWarnOnUnload from "@/hooks/useWarnOnUnload";
 import customAxios from "@/lib/axios";
 import useHeaderStore from "@/store/useHeaderStore";
 import RoadMap from "@/components/module/Ai/RoadMap";
+import { formatToKoreanMoney, mapSliderToAmount } from "@/utils";
 
 const YEAR_LIST = [
   "의성",
@@ -116,7 +117,14 @@ const AiPage = () => {
         params: {
           location: region,
           crop,
-          money: budget,
+          money: budget
+            ? budget
+                .split("~")
+                .map((bud) =>
+                  formatToKoreanMoney(mapSliderToAmount(Number(bud)))
+                )
+                .join(" ~ ")
+            : "선택 안함",
           level: experience,
         },
         headers: {
