@@ -16,11 +16,19 @@ type EnterCropProps = {
   handleToggle: () => void;
   open: boolean;
   setCrop: (crop: string) => void;
+  setModalContext: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      content: string;
+      confirmText: string;
+      cancelText: string;
+      isShow: boolean;
+    }>
+  >;
 };
 
 const EnterCrop = ({
   state,
-
   next,
   context,
   setContext,
@@ -29,6 +37,7 @@ const EnterCrop = ({
   handleToggle,
   open,
   setCrop,
+  setModalContext,
 }: EnterCropProps) => {
   return (
     <Wrapper>
@@ -197,9 +206,14 @@ const EnterCrop = ({
               </div>
               <svg
                 onClick={() => {
-                  alert(
-                    "오늘 날짜 기준으로 재배하기 좋은 최적의 작물을 AI가 추천해드려요."
-                  );
+                  setModalContext({
+                    title: "추천 작물 안내",
+                    content:
+                      "오늘 날짜 기준으로 재배하기 좋은 최적의 작물을 AI가 추천해드려요.",
+                    confirmText: "확인",
+                    cancelText: "",
+                    isShow: true,
+                  });
                 }}
                 width="20"
                 height="20"

@@ -323,69 +323,75 @@ const MentorPage = () => {
         <br />
         선택해 주세요.
       </TitleBox>
-      <GridBox>
-        {MENTOR_LIST.map((mentor) => (
-          <GridItem
-            key={mentor.name}
-            onClick={() => {
-              setSelectedMentor(mentor.id);
-            }}
-          >
-            <div style={{ width: "fit-content", position: "relative" }}>
-              {selectedMentor === mentor.id && (
-                <svg
-                  width="26"
-                  height="26"
-                  viewBox="0 0 26 26"
-                  fill="none"
+      <div style={{ flex: 1, width: "100%" }}>
+        <GridBox>
+          {MENTOR_LIST.map((mentor) => (
+            <GridItem
+              key={mentor.name}
+              onClick={() => {
+                setSelectedMentor(mentor.id);
+              }}
+            >
+              <div style={{ width: "fit-content", position: "relative" }}>
+                {selectedMentor === mentor.id && (
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    style={{
+                      position: "absolute",
+                      right: "0",
+                      top: "5",
+                      zIndex: "1",
+                    }}
+                  >
+                    <rect width="26" height="26" rx="13" fill="#008F66" />
+                    <path
+                      d="M7.5 13L11.5 17.5L18.5 8.5"
+                      stroke="white"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+                <div
                   style={{
-                    position: "absolute",
-                    right: "0",
-                    top: "5",
-                    zIndex: "1",
+                    width: "100px",
+                    maxWidth: "100px",
+                    height: "100px",
+                    maxHeight: "100px",
+                    aspectRatio: "1/1",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    borderRadius: "50px",
+                    overflow: "hidden",
+                    position: "relative",
+                    border:
+                      selectedMentor === mentor.id
+                        ? "5px solid #008F66"
+                        : "none",
                   }}
                 >
-                  <rect width="26" height="26" rx="13" fill="#008F66" />
-                  <path
-                    d="M7.5 13L11.5 17.5L18.5 8.5"
-                    stroke="white"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                  <Image
+                    src={mentor.image}
+                    alt={mentor.name}
+                    fill
+                    style={{ objectFit: "contain" }}
+                    priority
                   />
-                </svg>
-              )}
-              <div
-                style={{
-                  width: "100px",
-                  height: "100px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  borderRadius: "50px",
-                  overflow: "hidden",
-                  position: "relative",
-                  border:
-                    selectedMentor === mentor.id ? "5px solid #008F66" : "none",
-                }}
-              >
-                <Image
-                  src={mentor.image}
-                  alt={mentor.name}
-                  fill
-                  style={{ objectFit: "contain" }}
-                  sizes="100px"
-                  priority
-                />
+                </div>
               </div>
-            </div>
-            <div>
-              <NameBox>{`${mentor.name} 멘토`}</NameBox>
-              <DescriptionBox>{mentor.description}</DescriptionBox>
-            </div>
-          </GridItem>
-        ))}
-      </GridBox>
+              <div>
+                <NameBox>{`${mentor.name} 멘토`}</NameBox>
+                <DescriptionBox>{mentor.description}</DescriptionBox>
+              </div>
+            </GridItem>
+          ))}
+        </GridBox>
+      </div>
       <ButtonWrapper>
         <Button
           onClick={() => {
@@ -514,7 +520,6 @@ const Main = styled.main`
 `;
 
 const GridBox = styled.div`
-  flex: 1;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: auto;
@@ -528,7 +533,6 @@ const GridItem = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 10px;
   border-radius: 10px;
   font-size: 24px;
   font-weight: 700;
@@ -597,7 +601,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: absolute;
+  position: relative;
   bottom: 20px;
   gap: 12px;
   padding: 0 20px;

@@ -82,6 +82,13 @@ const AiPage = () => {
   const [crop, setCrop] = useState("");
   const swiperRef = useRef<SwiperRef | null>(null);
   const [universitySearchOpen, setUniversitySearchOpen] = useState(false);
+  const [modalContext, setModalContext] = useState({
+    title: "",
+    content: "",
+    confirmText: "확인",
+    cancelText: "취소",
+    isShow: false,
+  });
 
   useWarnOnUnload();
 
@@ -142,6 +149,7 @@ const AiPage = () => {
           }}
           open={openRegion}
           setRegion={setRegion}
+          setModalContext={setModalContext}
         />
       ),
       crop: (
@@ -157,6 +165,7 @@ const AiPage = () => {
           }}
           open={openCrop}
           setCrop={setCrop}
+          setModalContext={setModalContext}
         />
       ),
       budget: (
@@ -275,6 +284,79 @@ const AiPage = () => {
         </BackButton>
       )}
       {getComponent(flowState)}
+      <Modal open={modalContext.isShow}>
+        <BackgroundLayer />
+        <div
+          style={{
+            width: "324px",
+            height: "266px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            backgroundColor: "white",
+            borderRadius: "16px",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+            <path
+              d="M22 41.25C32.6315 41.25 41.25 32.6315 41.25 22C41.25 11.3685 32.6315 2.75 22 2.75C11.3685 2.75 2.75 11.3685 2.75 22C2.75 32.6315 11.3685 41.25 22 41.25Z"
+              fill="#D3EBAD"
+            />
+            <path
+              d="M22 33C28.0751 33 33 28.0751 33 22C33 15.9249 28.0751 11 22 11C15.9249 11 11 15.9249 11 22C11 28.0751 15.9249 33 22 33Z"
+              fill="#008F66"
+            />
+            <path
+              d="M19.9375 26.813C19.5869 26.813 19.2362 26.6755 18.9681 26.4074L16.2181 23.6574C15.6819 23.1211 15.6819 22.248 16.2181 21.7118C16.7544 21.1755 17.6275 21.1755 18.1637 21.7118L19.9444 23.4924L25.85 17.5868C26.3862 17.0505 27.2594 17.0505 27.7956 17.5868C28.3319 18.123 28.3319 18.9961 27.7956 19.5324L20.9206 26.4074C20.6525 26.6755 20.3019 26.813 19.9512 26.813H19.9375Z"
+              fill="white"
+            />
+          </svg>
+          <div
+            style={{
+              fontSize: "24px",
+              fontWeight: 600,
+              lineHeight: "36px",
+              letterSpacing: "-2%",
+              color: "#000000",
+              textAlign: "center",
+              marginTop: "8px",
+            }}
+          >
+            {modalContext.title || "예약 완료"}
+          </div>
+          <div
+            style={{ fontSize: "16px", textAlign: "center", padding: "0 20px" }}
+          >
+            {modalContext.content ||
+              "예약이 성공적으로 완료되었습니다. 확인 버튼을 눌러주세요."}
+          </div>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              padding: "0 20px",
+              marginTop: "20px",
+            }}
+          >
+            <Button
+              style={{ backgroundColor: "#D3EBAD", color: "#008F66" }}
+              onClick={() => {
+                setModalContext({
+                  ...modalContext,
+                  isShow: false,
+                });
+              }}
+            >
+              확인
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Main>
   );
 };

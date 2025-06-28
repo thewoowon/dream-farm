@@ -215,6 +215,7 @@ const VoicePage = () => {
           letterSpacing: "-2%",
           color: "#000000",
           minHeight: "57px",
+          zIndex: 1000,
         }}
       >
         <svg

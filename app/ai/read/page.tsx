@@ -43,6 +43,23 @@ const ReadPage = () => {
     refetchOnWindowFocus: false,
   });
 
+  function formatKoreanUnit(num: number): string {
+    const units = [
+      { value: 1_0000_0000_0000, label: "조" },
+      { value: 1_0000_0000, label: "억" },
+      { value: 1_0000_000, label: "천만" },
+      { value: 1_0000_0, label: "백만" },
+    ];
+
+    for (const unit of units) {
+      if (num >= unit.value) {
+        return `${Math.floor(num / unit.value)}${unit.label}`;
+      }
+    }
+
+    return num.toLocaleString(); // 만약 단위가 작으면 그냥 숫자 표시
+  }
+
   return (
     <Main>
       <Wrapper>
@@ -57,8 +74,7 @@ const ReadPage = () => {
               </svg>
               예산
             </FlexColumnBox>
-
-            {data?.money ? `${data.money.toLocaleString()}원` : ""}
+            {formatKoreanUnit(Number(data?.money || 0))} 원
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -101,29 +117,32 @@ const ReadPage = () => {
             {data?.location || ""}
           </GridItem>
         </GridBox>
-        <AnalysisBox>
-          <div
-            style={{
-              fontSize: "20px",
-              fontWeight: 600,
-              lineHeight: "24px",
-              letterSpacing: "-2%",
-              color: "#006910",
-              textAlign: "center",
-            }}
-          >
-            종합분석
-          </div>
-          <div>{data?.summary || ""}</div>
-          <MoreButton
-            onClick={() => {
-              router.push("/analysis");
-              change("none");
-            }}
-          >
-            더보기
-          </MoreButton>
-        </AnalysisBox>
+        <div style={{ flex: 1, width: "100%" }}>
+          <AnalysisBox>
+            <div
+              style={{
+                fontSize: "20px",
+                fontWeight: 600,
+                lineHeight: "24px",
+                letterSpacing: "-2%",
+                color: "#006910",
+                textAlign: "center",
+              }}
+            >
+              종합분석
+            </div>
+            <div>{data?.summary.slice(0, 100) + "..."}</div>
+
+            <MoreButton
+              onClick={() => {
+                router.push("/analysis");
+                change("none");
+              }}
+            >
+              더보기
+            </MoreButton>
+          </AnalysisBox>
+        </div>
         <ButtonWrapper>
           <Button
             onClick={() => {
@@ -223,7 +242,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: absolute;
+  position: relative;
   bottom: 20px;
   gap: 12px;
 `;
@@ -335,4 +354,25 @@ const MoreButton = styled.div`
   &:active {
     color: #006910;
   }
+`;
+
+const Modal = styled.div<{ open: boolean }>`
+  display: ${({ open }) => (open ? "block" : "none")};
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  padding: 0 16px;
+`;
+
+const BackgroundLayer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.5;
 `;

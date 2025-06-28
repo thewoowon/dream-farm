@@ -107,29 +107,31 @@ const RoadMap = ({ state, next, context, data }: RoadMapProps) => {
           {data.location || ""}
         </GridItem>
       </GridBox>
-      <AnalysisBox>
-        <div
-          style={{
-            fontSize: "20px",
-            fontWeight: 600,
-            lineHeight: "24px",
-            letterSpacing: "-2%",
-            color: "#006910",
-            textAlign: "center",
-          }}
-        >
-          종합분석
-        </div>
-        <div>{data.summary.slice(0, 100) + "..."}</div>
-        <MoreButton
-          onClick={() => {
-            router.push("/analysis");
-            change("none");
-          }}
-        >
-          더보기
-        </MoreButton>
-      </AnalysisBox>
+      <div style={{ flex: 1, width: "100%" }}>
+        <AnalysisBox>
+          <div
+            style={{
+              fontSize: "20px",
+              fontWeight: 600,
+              lineHeight: "24px",
+              letterSpacing: "-2%",
+              color: "#006910",
+              textAlign: "center",
+            }}
+          >
+            종합분석
+          </div>
+          <div>{data.summary.slice(0, 100) + "..."}</div>
+          <MoreButton
+            onClick={() => {
+              router.push("/analysis");
+              change("none");
+            }}
+          >
+            더보기
+          </MoreButton>
+        </AnalysisBox>
+      </div>
       <ButtonWrapper>
         <Button
           onClick={() => {
@@ -257,7 +259,6 @@ const FlexColumnBox = styled.div`
 `;
 
 const AnalysisBox = styled.div`
-  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;

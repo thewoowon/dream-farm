@@ -215,14 +215,7 @@ const Presubmit = ({
           onClick={async () => {
             return await generateRoadMap();
           }}
-          disabled={
-            context.region &&
-            context.crop &&
-            context.budget &&
-            context.experience
-              ? false
-              : true
-          }
+          disabled={context.experience ? false : true}
         >
           귀농 로드맵 만들기
         </Button>

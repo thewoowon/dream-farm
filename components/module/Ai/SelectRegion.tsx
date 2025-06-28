@@ -16,6 +16,15 @@ type SelectRegionProps = {
   handleToggle: () => void;
   open: boolean;
   setRegion: (region: string) => void;
+  setModalContext: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      content: string;
+      confirmText: string;
+      cancelText: string;
+      isShow: boolean;
+    }>
+  >;
 };
 
 const SelectRegion = ({
@@ -28,6 +37,7 @@ const SelectRegion = ({
   handleToggle,
   open,
   setRegion,
+  setModalContext,
 }: SelectRegionProps) => {
   return (
     <Wrapper>
@@ -199,9 +209,14 @@ const SelectRegion = ({
               </div>
               <svg
                 onClick={() => {
-                  alert(
-                    "오늘 날짜 기준으로 귀농하기 좋은 최적의 장소를 AI가 추천해드려요."
-                  );
+                  setModalContext({
+                    title: "추천 지역 안내",
+                    content:
+                      "오늘 날짜 기준으로 귀농하기 좋은 최적의 장소를 AI가 추천해드려요.",
+                    confirmText: "확인",
+                    cancelText: "",
+                    isShow: true,
+                  });
                 }}
                 width="20"
                 height="20"
