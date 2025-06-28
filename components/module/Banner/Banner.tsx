@@ -8,58 +8,41 @@ import styled from "@emotion/styled";
 import { PaginationOptions } from "swiper/types";
 import { Banner1, Banner2, Banner3, Banner4 } from "./assets";
 import { useRouter } from "next/navigation";
+import Banner5 from "./assets/Banner5";
+import Banner6 from "./assets/Banner6";
 
 const Banner = () => {
-  const router = useRouter();
-  const pagination: PaginationOptions = {
-    clickable: true,
-    renderBullet: function (index: number, className: string) {
-      return '<div class="' + className + '"></div>';
-    },
-  };
-
-  const handleClick = (slug: string) => {
-    router.push(`/story/${slug}`);
-  };
   return (
     <Container>
       <StyledSwiper
         autoplay={{
-          delay: 5000,
+          delay: 1000,
           disableOnInteraction: true,
         }}
         loop={true}
-        pagination={pagination}
         modules={[Autoplay, Pagination]}
         spaceBetween={20}
+        // 그냥 슬라이드 쭉 보여주기
+        slidesPerView={3}
+        // 2초 간격으로 슬라이드 변경
       >
-        <StyledSwiperSlide
-          onClick={() => {
-            handleClick("purification");
-          }}
-        >
+        <StyledSwiperSlide>
           <Banner1 />
         </StyledSwiperSlide>
-        <StyledSwiperSlide
-          onClick={() => {
-            handleClick("noise");
-          }}
-        >
+        <StyledSwiperSlide>
           <Banner2 />
         </StyledSwiperSlide>
-        <StyledSwiperSlide
-          onClick={() => {
-            handleClick("monologue");
-          }}
-        >
+        <StyledSwiperSlide>
           <Banner3 />
         </StyledSwiperSlide>
-        <StyledSwiperSlide
-          onClick={() => {
-            handleClick("riding");
-          }}
-        >
+        <StyledSwiperSlide>
           <Banner4 />
+        </StyledSwiperSlide>
+        <StyledSwiperSlide>
+          <Banner5 />
+        </StyledSwiperSlide>
+        <StyledSwiperSlide>
+          <Banner6 />
         </StyledSwiperSlide>
       </StyledSwiper>
     </Container>
@@ -76,7 +59,7 @@ const Container = styled.div`
 
 const StyledSwiper = styled(Swiper)`
   width: 100%;
-  height: 275px;
+  height: 119px;
   display: flex;
   flex-direction: column;
   gap: 12px;

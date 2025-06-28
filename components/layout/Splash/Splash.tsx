@@ -2,6 +2,8 @@
 
 import styled from "@emotion/styled";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import BackgroundVideo from "@/components/module/BackgroundVideo";
 
 const Splash = () => {
   const [boarding, setBoarding] = useState(true);
@@ -16,7 +18,30 @@ const Splash = () => {
     return null;
   }
 
-  return <Container>스플래시 화면</Container>;
+  return (
+    <Container>
+      <BackgroundVideo />
+      <div
+        style={{
+          position: "relative",
+          width: "163px",
+          height: "59px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Image
+          src="/images/common/dreamfarm-logo.png"
+          alt="Splash Image"
+          fill
+          style={{ objectFit: "contain" }}
+          priority
+          quality={100}
+        />
+      </div>
+    </Container>
+  );
 };
 
 export default Splash;
@@ -29,11 +54,17 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #000000;
+  background-color: #ffffff;
+  font-family: "Pretendard Variable", Pretendard, -apple-system, Blink;
   z-index: 200;
   animation: fadeOut 3s ease-in-out 2s forwards;
-  font-size: 24px;
-  color: #ffffff;
+  font-size: 20px;
+  color: #000000;
+  background-image: url("/images/common/splash-bg.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 
   @keyframes fadeOut {
     from {

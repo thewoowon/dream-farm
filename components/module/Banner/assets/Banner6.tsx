@@ -12,7 +12,7 @@ const Container = styled.div`
   overflow: hidden;
   background: transparent;
   position: relative;
-  background-image: url("/images/slides/slide-4.png");
+  background-image: url("/images/slides/slide-6.png");
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;

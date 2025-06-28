@@ -3,7 +3,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #D3EBAD;
   --foreground: #171717;
   --vh: 1vh; /* 초기값 설정 */
 }

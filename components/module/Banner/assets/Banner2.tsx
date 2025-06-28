@@ -7,15 +7,14 @@ const Banner2 = () => {
 export default Banner2;
 
 const Container = styled.div`
-  width: 100%;
-  height: 255px;
+  width: 128px;
+  height: 119px;
   overflow: hidden;
-  background: #f9f9f9;
+  background: transparent;
   position: relative;
   border-radius: 12px;
-  box-shadow: 0px 3px 20px 0 rgba(0, 0, 0, 0.04);
-  background-image: url("/assets/images/noise.png");
-  background-size: cover;
+  background-image: url("/images/slides/slide-2.png");
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;

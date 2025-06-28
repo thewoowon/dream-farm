@@ -8,9 +8,11 @@ import Header from "@/components/layout/Header";
 import useLoading from "@/hooks/useLoading";
 import Splash from "@/components/layout/Splash";
 import Bounce from "@/components/element/bounce";
+import useHeaderStore from "@/store/useHeaderStore";
 
 const Providers = ({ children }: { children: React.ReactNode }) => {
   const loading = useLoading();
+  const { display } = useHeaderStore();
   const [isSplashVisible, setIsSplashVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -107,10 +109,12 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
           justifyContent: "center",
           height: "calc(var(--vh, 1vh) * 100)", // height를 계산된 뷰포트 높이로 설정
           position: "relative",
+          maxWidth: "480px",
           width: "100%",
           margin: "0 auto",
+          boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
           overflow: "auto", // overflow를 auto로 변경
-          backgroundColor: "black",
+          backgroundColor: "#F5F5F5",
         }}
       >
         <Bounce width={60} height={60} />
@@ -130,14 +134,16 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
             justifyContent: "center",
             height: "calc(var(--vh, 1vh) * 100)", // height를 계산된 뷰포트 높이로 설정
             position: "relative",
+            maxWidth: "480px",
             width: "100%",
             margin: "0 auto",
+            boxShadow: "0 0 10px rgba(0, 0, 0, 0.1)",
             overflow: "hidden", // overflow를 auto로 변경
-            backgroundColor: "#000000",
+            backgroundColor: "#F5F5F5",
           }}
         >
           {loading && <div>로딩 중...</div>}
-          <Header />
+          <Header display={display} />
           {children}
           {isSplashVisible && <Splash />}
         </div>
