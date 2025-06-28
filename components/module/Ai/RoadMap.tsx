@@ -203,7 +203,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: center;
-  position: absolute;
+  position: relative;
   bottom: 20px;
   gap: 12px;
 `;
@@ -257,6 +257,7 @@ const FlexColumnBox = styled.div`
 `;
 
 const AnalysisBox = styled.div`
+  flex: 1;
   width: 100%;
   display: flex;
   flex-direction: column;
