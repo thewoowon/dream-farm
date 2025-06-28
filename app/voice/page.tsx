@@ -21,7 +21,7 @@ type SpeechRecognitionStatus =
   | "onend";
 
 const VoicePage = () => {
-  const [text, setText] = useState("🎤 마이크를 눌러 말해보세요!");
+  const [text, setText] = useState("🔘 버튼을 눌러 말해보세요!");
 
   const [status, setStatus] = useState<SpeechRecognitionStatus>("onend");
   const recognitionRef = useRef<SpeechRecognition | null>(null);
