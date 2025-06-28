@@ -5,7 +5,7 @@ import qs from "qs";
 const customAxios = axios.create({
   withCredentials: true, // CORS 요청 시 인증 정보를 전송하도록 설정
   // 기타 필요한 기본 설정 추가
-  baseURL: "http://35.216.51.152",
+  baseURL: "https://api.dreamfarm.im",
   paramsSerializer: (params) => {
     return qs.stringify(params, { arrayFormat: "repeat" });
   },
