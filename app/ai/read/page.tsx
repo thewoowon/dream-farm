@@ -48,16 +48,30 @@ const ReadPage = () => {
       { value: 1_0000_0000_0000, label: "조" },
       { value: 1_0000_0000, label: "억" },
       { value: 1_0000_000, label: "천만" },
-      { value: 1_0000_0, label: "백만" },
+      { value: 100_0000, label: "백만" },
+      { value: 10_0000, label: "십만" },
+      { value: 1_0000, label: "만" },
+      { value: 1_000, label: "천" },
+      { value: 100, label: "백" },
+      { value: 10, label: "십" },
     ];
 
+    let result = "";
+
     for (const unit of units) {
-      if (num >= unit.value) {
-        return `${Math.floor(num / unit.value)}${unit.label}`;
+      const unitAmount = Math.floor(num / unit.value);
+      if (unitAmount > 0) {
+        result += `${unitAmount}${unit.label} `;
+        num %= unit.value;
       }
     }
 
-    return num.toLocaleString(); // 만약 단위가 작으면 그냥 숫자 표시
+    // 나머지가 있을 경우 (1원 단위 등)
+    if (num > 0) {
+      result += `${num}`;
+    }
+
+    return result.trim();
   }
 
   return (
