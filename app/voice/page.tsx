@@ -49,7 +49,7 @@ const VoicePage = () => {
           "/chat/chatToAudio",
           {
             text: message,
-            userId: "5d8d0894-f643-495d-8a41-273dc25126d3", // 사용자 ID를 하드코딩
+            userId: sessionStorage.getItem("userId"),
           },
           {
             headers: {
