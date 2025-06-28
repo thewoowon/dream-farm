@@ -19,7 +19,6 @@ type SelectRegionProps = {
 };
 
 const SelectRegion = ({
-  
   state,
   next,
   context,
@@ -203,6 +202,11 @@ const SelectRegion = ({
                 추천 지역
               </div>
               <svg
+                onClick={() => {
+                  alert(
+                    "오늘 날짜 기준으로 귀농하기 좋은 최적의 장소를 AI가 추천해드려요."
+                  );
+                }}
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"

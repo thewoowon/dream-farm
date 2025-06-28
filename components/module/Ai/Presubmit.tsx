@@ -135,7 +135,7 @@ const Presubmit = ({
                   textAlign: "left",
                 }}
               >
-                얘산
+                예산
               </div>
               <div
                 style={{
@@ -178,7 +178,7 @@ const Presubmit = ({
                   textAlign: "left",
                 }}
               >
-                농협 경험
+                농업 경험
               </div>
               <div
                 style={{

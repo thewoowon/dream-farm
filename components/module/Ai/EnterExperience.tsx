@@ -24,7 +24,6 @@ type EnterExperienceProps = {
 };
 
 const EnterExperience = ({
-  
   state,
   next,
   context,
@@ -112,14 +111,6 @@ const EnterExperience = ({
         <Button onClick={next} disabled={context.experience ? false : true}>
           다음
         </Button>
-        <HollowButton
-          onClick={() => {
-            setContext("");
-            next();
-          }}
-        >
-          잘 모르겠어요
-        </HollowButton>
       </ButtonWrapper>
     </Wrapper>
   );

@@ -19,9 +19,8 @@ type EnterCropProps = {
 };
 
 const EnterCrop = ({
-  
   state,
-  
+
   next,
   context,
   setContext,
@@ -202,6 +201,11 @@ const EnterCrop = ({
                 추천 작물
               </div>
               <svg
+                onClick={() => {
+                  alert(
+                    "오늘 날짜 기준으로 재배하기 좋은 최적의 작물을 AI가 추천해드려요."
+                  );
+                }}
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"

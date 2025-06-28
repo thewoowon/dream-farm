@@ -64,7 +64,7 @@ const ReadPage = () => {
               예산
             </FlexColumnBox>
 
-            {data.budget ? `${data.budget.toLocaleString()}원` : ""}
+            {data?.money ? `${data.money.toLocaleString()}원` : ""}
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -82,7 +82,7 @@ const ReadPage = () => {
               </svg>
               준비 기간
             </FlexColumnBox>
-            {data.period} 개월
+            {data?.period} 개월
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -104,7 +104,7 @@ const ReadPage = () => {
               </svg>
               (추천)작물
             </FlexColumnBox>
-            {data.crop || ""}
+            {data?.crop || ""}
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -122,7 +122,7 @@ const ReadPage = () => {
               </svg>
               지역
             </FlexColumnBox>
-            {data.region || ""}
+            {data?.location || ""}
           </GridItem>
         </GridBox>
         <AnalysisBox>

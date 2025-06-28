@@ -52,7 +52,19 @@ function CircularGauge({ percentage }: { percentage: number }) {
   return (
     <CircularWrapper>
       <div className="svg-container">
-        <div className="center-label">{percentage}%</div>
+        <div
+          className="center-label"
+          style={{
+            width: "100%",
+            height: "100%",
+            position: "absolute",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {percentage}%
+        </div>
         <svg className="progress-ring" width={radius * 2} height={radius * 2}>
           <circle
             stroke="#D9D9D9"

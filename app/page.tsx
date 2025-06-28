@@ -25,13 +25,19 @@ export default function Home() {
         >
           <Banner />
         </div>
-        지금부터
-        <br />
-        귀농을 위한
-        <br />
-        정착 로드맵을
-        <br />
-        설계해볼까요?
+        <div
+          style={{
+            marginTop: "44px",
+          }}
+        >
+          지금부터
+          <br />
+          귀농을 위한
+          <br />
+          정착 로드맵을
+          <br />
+          설계해볼까요?
+        </div>
       </TitleBox>
       <ButtonWrapper>
         <ButtonBox>
