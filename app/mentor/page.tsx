@@ -181,6 +181,7 @@ const BottomSheet = ({
                     textAlign: "left",
                     padding: "0 16px",
                   }}
+                  placeholder="010-0000-0000"
                 />
               </div>
 
@@ -203,7 +204,6 @@ const BottomSheet = ({
                   height="22"
                   viewBox="0 0 22 22"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
                     d="M11 22C17.0751 22 22 17.0751 22 11C22 4.92487 17.0751 0 11 0C4.92487 0 0 4.92487 0 11C0 17.0751 4.92487 22 11 22Z"
@@ -306,7 +306,6 @@ const MentorPage = () => {
           height="25"
           viewBox="0 0 24 25"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
         >
           <path
             d="M14.998 19.5L7.99805 12.5L14.998 5.5"
@@ -339,7 +338,6 @@ const MentorPage = () => {
                   height="26"
                   viewBox="0 0 26 26"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
                   style={{
                     position: "absolute",
                     right: "0",
@@ -434,13 +432,7 @@ const MentorPage = () => {
             transform: "translate(-50%, -50%)",
           }}
         >
-          <svg
-            width="44"
-            height="44"
-            viewBox="0 0 44 44"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
             <path
               d="M22 41.25C32.6315 41.25 41.25 32.6315 41.25 22C41.25 11.3685 32.6315 2.75 22 2.75C11.3685 2.75 2.75 11.3685 2.75 22C2.75 32.6315 11.3685 41.25 22 41.25Z"
               fill="#D3EBAD"

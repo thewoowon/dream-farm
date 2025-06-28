@@ -303,4 +303,5 @@ const DiplayBox = styled.div`
   gap: 8px;
   padding: 20px 10px;
   transition: all 0.2s ease-in-out;
+  border-bottom: 1px solid ${COLORS.grayscale[300]};
 `;

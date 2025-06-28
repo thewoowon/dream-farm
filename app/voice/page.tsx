@@ -224,7 +224,7 @@ const VoicePage = () => {
           height="25"
           viewBox="0 0 24 25"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          
         >
           <path
             d="M14.998 19.5L7.99805 12.5L14.998 5.5"

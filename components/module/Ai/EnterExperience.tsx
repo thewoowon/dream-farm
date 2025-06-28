@@ -80,13 +80,7 @@ const EnterExperience = ({
                 )}
               </div>
               {context.experience === experience.level && (
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <g clipPath="url(#clip0_645_5514)">
                     <path
                       d="M19.5 6.5L9.75 17.25L4.5 12.0005"
@@ -126,11 +120,18 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  padding-top: 50px;
   gap: 10px;
+  position: relative;
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 `;
 
 const TitleBox = styled(motion.div)`
+  flex: 1;
   width: 100%;
   text-align: center;
   font-size: 24px;
@@ -140,8 +141,15 @@ const TitleBox = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 75px;
+  overflow: scroll;
+  padding-top: 20px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 `;
 
 const Button = styled.button`
@@ -186,7 +194,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: absolute;
+  position: relative;
   bottom: 20px;
   gap: 12px;
 `;

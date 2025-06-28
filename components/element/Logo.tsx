@@ -5,7 +5,7 @@ const LogoTitle = ({ width = 171, height = 67, color = "#FFFBF8" }) => {
       height={height}
       viewBox="0 0 171 67"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      
     >
       <g filter="url(#filter0_d_2132_475)">
         <path

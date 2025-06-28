@@ -12,7 +12,7 @@ const Circle = ({ style }: CircleProps) => {
       height="226"
       viewBox="0 0 480 226"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      
     >
       <g filter="url(#filter0_bi_415_8621)">
         <circle

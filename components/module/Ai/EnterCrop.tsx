@@ -79,13 +79,7 @@ const EnterCrop = ({
             >
               {context.crop || "작물을 선택해주세요"}
             </div>
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path
                 d="M16.2441 7.51709L9.9976 13.7636L3.75107 7.51709"
                 stroke="#767676"
@@ -145,9 +139,10 @@ const EnterCrop = ({
                       height: "20px",
                       borderRadius: "50%",
                       backgroundColor:
-                        context.crop === crop
-                          ? "#008f66"
-                          : COLORS.grayscale[300],
+                        context.crop === crop ? "#008f66" : "white",
+                      border:
+                        context.crop === crop ? "none" : "1px solid #CFCFCF",
+
                       marginRight: "8px",
                       display: "flex",
                       alignItems: "center",
@@ -210,7 +205,6 @@ const EnterCrop = ({
                 height="20"
                 viewBox="0 0 20 20"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg"
               >
                 <path
                   d="M10 2.5C5.85786 2.5 2.5 5.85786 2.5 10C2.5 14.1421 5.85786 17.5 10 17.5C14.1421 17.5 17.5 14.1421 17.5 10C17.5 5.85786 14.1421 2.5 10 2.5Z"
@@ -273,6 +267,7 @@ const EnterCrop = ({
         <HollowButton
           onClick={() => {
             setContext("");
+            next();
           }}
         >
           잘 모르겠어요
@@ -292,11 +287,18 @@ const Wrapper = styled.div`
   align-items: center;
   justify-content: flex-start;
   position: relative;
-  padding-top: 50px;
   gap: 10px;
+  position: relative;
+  overflow: scroll;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 `;
 
 const TitleBox = styled(motion.div)`
+  flex: 1;
   width: 100%;
   text-align: center;
   font-size: 24px;
@@ -306,8 +308,15 @@ const TitleBox = styled(motion.div)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 75px;
+  overflow: scroll;
+  padding-top: 20px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, and Opera */
+  }
 `;
 
 const Button = styled.button`
@@ -352,7 +361,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  position: absolute;
+  position: relative;
   bottom: 20px;
   gap: 12px;
 `;

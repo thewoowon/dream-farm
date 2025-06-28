@@ -20,7 +20,6 @@ import { Mousewheel } from "swiper/modules";
 import useWarnOnUnload from "@/hooks/useWarnOnUnload";
 import customAxios from "@/lib/axios";
 import useHeaderStore from "@/store/useHeaderStore";
-import UniversitySearch from "@/components/module/Ai/UniversitySearch";
 import RoadMap from "@/components/module/Ai/RoadMap";
 
 const YEAR_LIST = [
@@ -255,116 +254,27 @@ const AiPage = () => {
           )}
         </div>
       )}
-      {/* {flowState !== "region" && flowState !== "roadmap" && (
+      {flowState !== "region" && flowState !== "roadmap" && (
         <BackButton
           onClick={() => {
             flowProps.back();
           }}
+          style={{
+            marginTop: "16px",
+          }}
         >
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
               d="M14.998 19L7.99805 12L14.998 5"
-              stroke="#6178C8"
+              stroke="#008f66"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         </BackButton>
-      )} */}
-
+      )}
       {getComponent(flowState)}
-      {/* <Modal open={open}>
-        <BackgroundLayer />
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
-            position: "absolute",
-            padding: "0 16px 52px 16px",
-            bottom: "0",
-            left: "0",
-          }}
-        >
-          <SnapBox>
-            <Swiper
-              ref={swiperRef}
-              direction={"vertical"}
-              slidesPerView={"auto"}
-              className="snap-swiper"
-              spaceBetween={9}
-              centeredSlides={true}
-              onSlideChange={(swiper) => {
-                setRegion(YEAR_LIST[swiper.activeIndex]);
-              }}
-              mousewheel={true}
-              modules={[Mousewheel]}
-            >
-              {YEAR_LIST.map((year, index) => (
-                <SnapSlideItem
-                  key={index}
-                  onClick={() => {
-                    setRegion(region);
-                    swiperRef.current?.swiper.slideTo(index);
-                  }}
-                >
-                  {year}
-                  <Highlight selected={year === region} key={year}>
-                    {year}
-                  </Highlight>
-                </SnapSlideItem>
-              ))}
-            </Swiper>
-            {[2024, 2025, 2026, 2027, 2028, 2029, 2030].map((year) => (
-              <SnapItem
-                className={year === examYear ? "selected" : ""}
-                key={year}
-                onClick={() => {
-                  setExamYear(year);
-                }}
-              >
-                {year}
-              </SnapItem>
-            ))}
-          </SnapBox>
-          <ButtonWrapper>
-            <Button
-              backgroundColor={COLORS.primary[500]}
-              hoverBackgroundColor={COLORS.primary[600]}
-              color="white"
-              onClick={() => {
-                flowProps.setRegion(region);
-                handleClose();
-              }}
-            >
-              확인
-            </Button>
-            <CancelButton
-              onClick={() => {
-                setRegion("");
-                handleClose();
-              }}
-            >
-              취소
-            </CancelButton>
-          </ButtonWrapper>
-        </div>
-      </Modal> */}
-      <UniversitySearch
-        open={universitySearchOpen}
-        onClose={() => setUniversitySearchOpen(false)}
-        setContext={flowProps.setExperience}
-      />
     </Main>
   );
 };
