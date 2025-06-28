@@ -59,7 +59,7 @@ const Presubmit = ({
                   letterSpacing: "-2%",
                 }}
               >
-                {context.region}
+                {context.region || "선택 안함"}
               </div>
             </div>
             <div
@@ -102,7 +102,7 @@ const Presubmit = ({
                   letterSpacing: "-2%",
                 }}
               >
-                {context.crop}
+                {context.crop || "선택 안함"}
               </div>
             </div>
             <div
@@ -145,7 +145,7 @@ const Presubmit = ({
                   letterSpacing: "-2%",
                 }}
               >
-                {context.budget}
+                {context.budget || "선택 안함"}
               </div>
             </div>
             <div

@@ -84,7 +84,9 @@ const VoicePage = () => {
 
       const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
-      audio.play();
+      audio.addEventListener("canplaythrough", () => {
+        audio.play();
+      });
       setGptSpeech(true); // GPT 음성 재생 상태 업데이트
 
       console.log("오디오 재생:", audioData.text);
@@ -224,7 +226,6 @@ const VoicePage = () => {
           height="25"
           viewBox="0 0 24 25"
           fill="none"
-          
         >
           <path
             d="M14.998 19.5L7.99805 12.5L14.998 5.5"
