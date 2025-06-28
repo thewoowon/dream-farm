@@ -11,7 +11,7 @@ const Splash = () => {
   useEffect(() => {
     setTimeout(() => {
       setBoarding(false);
-    }, 5000);
+    }, 7000);
   }, []);
 
   if (!boarding) {
@@ -57,7 +57,7 @@ const Container = styled.div`
   background-color: #ffffff;
   font-family: "Pretendard Variable", Pretendard, -apple-system, Blink;
   z-index: 200;
-  animation: fadeOut 3s ease-in-out 2s forwards;
+  animation: fadeOut 5s ease-in-out 2s forwards;
   font-size: 20px;
   color: #000000;
   background-image: url("/images/common/splash-bg.png");
