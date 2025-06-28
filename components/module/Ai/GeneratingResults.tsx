@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { TYPOGRAPHY } from "@/styles/typography";
 import styled from "@emotion/styled";
 import { motion } from "framer-motion";
@@ -18,7 +19,7 @@ const CircularWrapper = styled.div`
     display: block;
     width: 104px;
     height: 104px;
-    transform: rotate(-90deg); /* 시작점을 위로 */
+    transform: rotate(-90deg);
   }
 
   .progress-ring__circle {
@@ -51,19 +52,7 @@ function CircularGauge({ percentage }: { percentage: number }) {
   return (
     <CircularWrapper>
       <div className="svg-container">
-        <div
-          className="center-label"
-          style={{
-            width: "100%",
-            height: "100%",
-            position: "absolute",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {percentage}%
-        </div>
+        <div className="center-label">{percentage}%</div>
         <svg className="progress-ring" width={radius * 2} height={radius * 2}>
           <circle
             stroke="#D9D9D9"
@@ -91,13 +80,30 @@ function CircularGauge({ percentage }: { percentage: number }) {
 }
 
 const GeneratingResults = ({
-  
   state,
-  
   context,
-  
   loading,
 }: GeneratingResultsProps) => {
+  const [percentage, setPercentage] = useState(1);
+
+  useEffect(() => {
+    const duration = 30_000; // 30초
+    const steps = 100;
+    const interval = duration / steps; // = 300ms
+
+    const timer = setInterval(() => {
+      setPercentage((prev) => {
+        if (prev >= 100) {
+          clearInterval(timer);
+          return 100;
+        }
+        return prev + 1;
+      });
+    }, interval);
+
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <Wrapper>
       <TitleBox
@@ -112,7 +118,7 @@ const GeneratingResults = ({
         <br />
         설계하고 있어요.
         <div>
-          <CircularGauge percentage={75} />
+          <CircularGauge percentage={percentage} />
         </div>
         <div>조금만 기다려주세요</div>
       </TitleBox>

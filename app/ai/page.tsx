@@ -53,7 +53,25 @@ const AiPage = () => {
   const { changeBackgroundColor } = useBackgroundColorStore();
   const { change, display } = useHeaderStore();
   const { flowState, ...flowProps } = useFlow();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<{
+    location: string;
+    level: string;
+    crop: string;
+    money: string;
+    period: string;
+    summary: string;
+    fullReport: string;
+    userId: string;
+  }>({
+    location: "",
+    level: "",
+    crop: "",
+    money: "",
+    period: "",
+    summary: "",
+    fullReport: "",
+    userId: "",
+  });
   const [generateLoading, setGenerateLoading] = useState(false);
   const [openRegion, setOpenRegion] = useState(false);
   const [openCrop, setOpenCrop] = useState(false);
@@ -68,15 +86,41 @@ const AiPage = () => {
 
   useWarnOnUnload();
 
-  
   const getResult = async () => {
     try {
       setGenerateLoading(true);
       const { region, crop, budget, experience } = flowProps.flowContext;
 
-      const pathname = `/sky/ai/${region}/${crop}/${budget}/${experience}`;
-      const response = await customAxios.get(pathname).then((res) => res.data);
-      setData(response);
+      const pathname = `/result/step3`;
+      const response = await customAxios.get<
+        unknown,
+        {
+          data: {
+            location: string;
+            level: string;
+            crop: string;
+            money: string;
+            period: string;
+            summary: string;
+            fullReport: string;
+            userId: string;
+          };
+        }
+      >(pathname, {
+        params: {
+          location: region,
+          crop,
+          money: budget,
+          level: experience,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      });
+      console.log("Response from /result/step3:", response);
+      setData(response.data);
+      sessionStorage.setItem("userId", response.data.userId);
     } catch (error) {
       console.error(error);
     }
@@ -139,7 +183,7 @@ const AiPage = () => {
           context={flowProps.flowContext}
           generateRoadMap={async () => {
             setGenerateLoading(true);
-            // await getResult();
+            await getResult();
             console.log("Generating load map...");
             flowProps.next();
             setGenerateLoading(false);

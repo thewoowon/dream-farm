@@ -4,12 +4,8 @@ import styled from "@emotion/styled";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import useHeaderStore from "@/store/useHeaderStore";
-
-const RESULTS = `리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다.
-            추천 작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-            X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을
-            제공할 것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인
-            영향을 미칠 것으로 기대...`;
+import { useQuery } from "@tanstack/react-query";
+import customAxios from "@/lib/axios";
 
 const AnalysisPage = () => {
   const router = useRouter();
@@ -22,6 +18,29 @@ const AnalysisPage = () => {
       console.error("Error copying to clipboard:", error);
     }
   };
+
+  const { data } = useQuery({
+    queryKey: ["analysis"],
+    queryFn: async () => {
+      try {
+        if (!sessionStorage.getItem("userId")) {
+          toast.error("로그인이 필요합니다.");
+          return null;
+        }
+        const response = await customAxios.get("/result/getResult", {
+          params: {
+            userId: sessionStorage.getItem("userId"),
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching analysis data:", error);
+        toast.error("분석 데이터를 불러오는 데 실패했습니다.");
+        return null; // Return null instead of an empty array
+      }
+    },
+    refetchOnWindowFocus: false,
+  });
   return (
     <Main>
       <div
@@ -41,7 +60,7 @@ const AnalysisPage = () => {
       >
         <svg
           onClick={() => {
-            router.push("/ai/read?id=1");
+            router.push("/ai/read");
             change("block");
           }}
           width="24"
@@ -61,7 +80,7 @@ const AnalysisPage = () => {
         종합분석
         <svg
           onClick={() => {
-            copyToClipboard(RESULTS);
+            copyToClipboard("");
           }}
           width="24"
           height="25"
@@ -90,69 +109,7 @@ const AnalysisPage = () => {
         </svg>
       </div>
       <AnalysisBox>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
+        <div>{data?.fullReport}</div>
       </AnalysisBox>
     </Main>
   );

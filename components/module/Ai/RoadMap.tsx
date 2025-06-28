@@ -17,17 +17,19 @@ type RoadMapProps = {
   next: () => void;
   context: FlowContext;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: any;
+  data: {
+    location: string;
+    level: string;
+    crop: string;
+    money: string;
+    period: string;
+    summary: string;
+    fullReport: string;
+    userId: string;
+  };
 };
 
-const RoadMap = ({
-  
-  state,
-  next,
-  context,
-  
-  data,
-}: RoadMapProps) => {
+const RoadMap = ({ state, next, context, data }: RoadMapProps) => {
   const router = useRouter();
   const { change } = useHeaderStore();
 
@@ -50,8 +52,7 @@ const RoadMap = ({
             </svg>
             예산
           </FlexColumnBox>
-
-          {context.region}
+          {data.money.toLocaleString() || ""} 원
         </GridItem>
         <GridItem>
           <FlexColumnBox>
@@ -69,8 +70,7 @@ const RoadMap = ({
             </svg>
             준비 기간
           </FlexColumnBox>
-
-          {context.budget}
+          {data.period || ""} 개월
         </GridItem>
         <GridItem>
           <FlexColumnBox>
@@ -93,7 +93,7 @@ const RoadMap = ({
             (추천)작물
           </FlexColumnBox>
 
-          {context.crop}
+          {data.crop}
         </GridItem>
         <GridItem>
           <FlexColumnBox>
@@ -111,7 +111,7 @@ const RoadMap = ({
             </svg>
             지역
           </FlexColumnBox>
-          {context.region}
+          {data.location || ""}
         </GridItem>
       </GridBox>
       <AnalysisBox>
@@ -127,16 +127,10 @@ const RoadMap = ({
         >
           종합 분석
         </div>
-        <div>
-          리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다. 추천
-          작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-          X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을 제공할
-          것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인 영향을 미칠
-          것으로 기대...
-        </div>
+        <div>{data.summary || ""}</div>
         <MoreButton
           onClick={() => {
-            router.push("/analysis?id=1");
+            router.push("/analysis");
             change("none");
           }}
         >

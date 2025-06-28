@@ -1,8 +1,10 @@
 "use client";
 
+import customAxios from "@/lib/axios";
 import useHeaderStore from "@/store/useHeaderStore";
 import { COLORS } from "@/styles/color";
 import styled from "@emotion/styled";
+import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -17,6 +19,29 @@ const RESULTS = `리스크는 OOO, 성공 확률을 높이기 위해서는 XXX�
 const ReadPage = () => {
   const router = useRouter();
   const { change } = useHeaderStore();
+
+  const { data } = useQuery({
+    queryKey: ["analysis"],
+    queryFn: async () => {
+      try {
+        if (!sessionStorage.getItem("userId")) {
+          toast.error("로그인이 필요합니다.");
+          return null;
+        }
+        const response = await customAxios.get("/result/getResult", {
+          params: {
+            userId: sessionStorage.getItem("userId"),
+          },
+        });
+        return response.data;
+      } catch (error) {
+        console.error("Error fetching analysis data:", error);
+        toast.error("분석 데이터를 불러오는 데 실패했습니다.");
+        return null;
+      }
+    },
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <Main>
@@ -39,7 +64,7 @@ const ReadPage = () => {
               예산
             </FlexColumnBox>
 
-            {"뿌려"}
+            {data.budget ? `${data.budget.toLocaleString()}원` : ""}
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -57,8 +82,7 @@ const ReadPage = () => {
               </svg>
               준비 기간
             </FlexColumnBox>
-
-            {"뿌려F"}
+            {data.period} 개월
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -80,8 +104,7 @@ const ReadPage = () => {
               </svg>
               (추천)작물
             </FlexColumnBox>
-
-            {"뿌려F"}
+            {data.crop || ""}
           </GridItem>
           <GridItem>
             <FlexColumnBox>
@@ -99,7 +122,7 @@ const ReadPage = () => {
               </svg>
               지역
             </FlexColumnBox>
-            {"뿌려"}
+            {data.region || ""}
           </GridItem>
         </GridBox>
         <AnalysisBox>
@@ -115,16 +138,10 @@ const ReadPage = () => {
           >
             종합 분석
           </div>
-          <div>
-            리스크는 OOO, 성공 확률을 높이기 위해서는 XXX에 집중해야 합니다.
-            추천 작물인 사과는 의성군의 기후와 토양에 적합하며, 예상 수익률은 약
-            X%입니다. 다이내믹한 시장 환경에서 사과 재배는 안정적인 수익을
-            제공할 것으로 예상됩니다. 또한, 사과 재배는 지역 경제에 긍정적인
-            영향을 미칠 것으로 기대...
-          </div>
+          <div>{data?.summary || ""}</div>
           <MoreButton
             onClick={() => {
-              router.push("/analysis?id=1");
+              router.push("/analysis");
               change("none");
             }}
           >

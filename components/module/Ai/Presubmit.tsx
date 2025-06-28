@@ -11,9 +11,7 @@ type PresubmitProps = {
 };
 
 const Presubmit = ({
-  
   state,
-  
   next,
   context,
   generateRoadMap,

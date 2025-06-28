@@ -10,6 +10,8 @@ import styled from "@emotion/styled";
 import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 // 로띠 타입 불러오기
 import { DotLottieReactProps } from "@lottiefiles/dotlottie-react";
+import { COLORS } from "@/styles/color";
+import { keyframes } from "@emotion/react";
 
 type SpeechRecognitionStatus =
   | "onstart"
@@ -32,6 +34,7 @@ const VoicePage = () => {
     }[]
   >([]);
   const [loading, setLoading] = useState(false);
+  const [gptSpeech, setGptSpeech] = useState(false);
 
   const router = useRouter();
   const { change } = useHeaderStore();
@@ -82,6 +85,7 @@ const VoicePage = () => {
       const audioUrl = URL.createObjectURL(blob);
       const audio = new Audio(audioUrl);
       audio.play();
+      setGptSpeech(true); // GPT 음성 재생 상태 업데이트
 
       console.log("오디오 재생:", audioData.text);
       setCommunicationContext((prev) => [
@@ -90,7 +94,7 @@ const VoicePage = () => {
       ]);
       audio.onended = () => {
         setLoading(false); // 오디오 재생이 끝나면 로딩 상태 해제
-        setText("🎤 마이크를 눌러 말해보세요!");
+        setGptSpeech(false); // GPT 음성 재생 상태 해제
       }; // 오디오 재생이 끝나면 로딩 상태 해제
       setText(`🤖 "${audioData.text}"`);
     },
@@ -155,12 +159,12 @@ const VoicePage = () => {
       // setStatus("✅ 인식 결과 수신됨");
       const transcript = event.results[0][0].transcript;
       const confidence = event.results[0][0].confidence;
-      setText(`📝 "${transcript}" (정확도: ${(confidence * 100).toFixed(1)}%)`);
 
       setCommunicationContext((prev) => [
         ...prev,
         { content: transcript, role: "user" },
       ]);
+      setText("응답을 기다리고 있습니다.");
       setLoading(true); // 로딩 상태로 변경
       sendMessage(transcript); // 메시지 전송
       recognition.stop(); // 인식 종료
@@ -168,7 +172,6 @@ const VoicePage = () => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     recognition.onerror = (event: any) => {
-      setText(`❌ 오류: ${event.error}`);
       // setStatus("🔴 오류 발생");
       setStatus("error");
       setShouldPulse(false);
@@ -214,7 +217,7 @@ const VoicePage = () => {
       >
         <svg
           onClick={() => {
-            router.push("/ai/read?id=1");
+            router.push("/ai/read");
             change("block");
           }}
           width="24"
@@ -251,28 +254,49 @@ const VoicePage = () => {
           marginTop: "56px",
         }}
       >
-        “안녕하세요. <br />
-        저는 AI 귀농 상담사 드리미에요.
-        <br />
-        궁금하신걸 편하게 물어보세요.”
+        {status == "onstart" || status == "onspeechstart" ? (
+          <div>듣고 있어요..</div>
+        ) : text ? (
+          <span
+            style={{
+              fontSize: "16px",
+              fontWeight: 600,
+              lineHeight: "24px",
+              letterSpacing: "-2%",
+              color: "#000000",
+            }}
+          >
+            {text}
+          </span>
+        ) : (
+          <>
+            “안녕하세요. <br />
+            저는 AI 귀농 상담사 드리미에요.
+            <br />
+            궁금하신걸 편하게 물어보세요.”
+          </>
+        )}
       </div>
       <DotLottieReact
         src="/assets/dreami.lottie"
         loop={true}
         autoplay={false}
-        style={{
-          width: "100%",
-          maxWidth: "400px",
-          height: "auto",
+        renderConfig={{
+          autoResize: true,
+          devicePixelRatio: 2,
         }}
         dotLottieRefCallback={(instance) => {
           setLottie(instance);
         }}
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+          transformOrigin: "center",
+        }}
       />
       {/* <PulseCircle shouldPulse={shouldPulse} scale={scale} /> */}
-      {(status == "onstart" || status == "onspeechstart") && (
-        <div>듣고 있어요..</div>
-      )}
       <div
         style={{
           marginTop: "1rem",
@@ -281,20 +305,6 @@ const VoicePage = () => {
           alignItems: "center",
         }}
       >
-        <button
-          disabled={loading}
-          onClick={startListening}
-          style={{
-            padding: "0.75rem 1.5rem",
-            fontSize: "1rem",
-            borderRadius: "8px",
-            backgroundColor: loading ? "#888" : "#000000",
-            color: "white",
-            border: "none",
-          }}
-        >
-          여기를 누르고 말해주세요.
-        </button>
         {/* <button
           onClick={stopListening}
           style={{
@@ -309,6 +319,18 @@ const VoicePage = () => {
           ⏹️ 인식 중지
         </button> */}
       </div>
+      <ButtonWrapper>
+        {!loading && !(status == "onstart" || status == "onspeechstart") && (
+          <Button
+            onClick={() => {
+              startListening();
+            }}
+          >
+            시작하기
+          </Button>
+        )}
+      </ButtonWrapper>
+      {gptSpeech && <InnerShadowWrapper />}
     </Main>
   );
 };
@@ -333,4 +355,109 @@ const Main = styled.main`
   scrollbar-width: none;
   --ms-overflow-style: none;
   position: relative;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  height: 48px;
+  background-color: #008f66;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -2%;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #007a5c;
+  }
+
+  &:disabled {
+    background-color: ${COLORS.grayscale[200]};
+    color: ${COLORS.grayscale[500]};
+    cursor: not-allowed;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: absolute;
+  bottom: 20px;
+  gap: 12px;
+  padding: 0 16px;
+`;
+
+const InnerGlow = styled.div`
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 100, 255, 0.3),
+    transparent
+  );
+  filter: blur(12px);
+  opacity: 0.6;
+`;
+
+const dancingShadow = keyframes`
+  0% {
+    box-shadow:
+      inset 0 0 100px rgba(0, 0, 0, 0.3),
+      inset 0 0 50px rgba(38, 255, 0, 0.35),
+      inset 0 0 10px rgba(0, 255, 128, 0.45);
+  }
+  20% {
+    box-shadow:
+      inset 0 0 120px rgba(0, 0, 0, 0.35),
+      inset 0 0 80px rgba(0, 255, 123, 0.3),
+      inset 0 0 45px rgba(0, 255, 55, 0.5);
+  }
+  40% {
+    box-shadow:
+      inset 0 0 100px rgba(0, 0, 0, 0.3),
+      inset 0 0 60px rgba(1, 255, 18, 0.35),
+      inset 0 0 20px rgba(0, 255, 136, 0.45);
+  }
+  60% {
+    box-shadow:
+      inset 0 0 100px rgba(0, 0, 0, 0.3),
+      inset 0 0 50px rgba(0, 255, 170, 0.35),
+      inset 0 0 10px rgba(0, 255, 89, 0.45);
+  }
+  80% {
+    box-shadow:
+      inset 0 0 120px rgba(0, 0, 0, 0.35),
+      inset 0 0 80px rgba(0, 255, 123, 0.4),
+      inset 0 0 45px rgba(0, 255, 123, 0.5);
+  }
+  100% {
+    box-shadow:
+      inset 0 0 100px rgba(0, 0, 0, 0.2),
+      inset 0 0 60px rgba(0, 255, 195, 0.35),
+      inset 0 0 20px rgba(0, 255, 98, 0.45);
+  }
+`;
+
+const InnerShadowWrapper = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  // background-color: rgba(255, 255, 255, 1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  animation: ${dancingShadow} 2s ease-in-out infinite alternate;
 `;

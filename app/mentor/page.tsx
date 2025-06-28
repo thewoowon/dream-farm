@@ -299,7 +299,7 @@ const MentorPage = () => {
       >
         <svg
           onClick={() => {
-            router.push("/ai/read?id=1");
+            router.push("/ai/read");
             change("block");
           }}
           width="24"
@@ -486,7 +486,7 @@ const MentorPage = () => {
               style={{ backgroundColor: "#D3EBAD", color: "#008F66" }}
               onClick={() => {
                 setModalOpen(false);
-                router.push("/ai/read?id=1");
+                router.push("/ai/read");
                 change("block");
               }}
             >
